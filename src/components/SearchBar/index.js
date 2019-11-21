@@ -11,7 +11,7 @@ const chunk = (arr, size) =>
 const handleSearch = (searchInput, setImagesData) => {
   window
     .fetch(
-      `http://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_API_KEY}&q=${searchInput}&limit=8`
+      `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_API_KEY}&q=${searchInput}&limit=8`
     )
     .then(response => response.json())
     .then(({data}) => setImagesData(chunk(data, 4)))
