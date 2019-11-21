@@ -1,18 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
-import mockData from './mock-data.json'
+// import mockData from './mock-data.json'
 
-const ImagesList = () => {
-  console.log('mockData', mockData)
+const ImagesList = ({imagesData}) => {
   return (
     <ImagesContainer>
-      {mockData.data.map((data, i) => (
-        <StyledImg
-          alt={`giphy-${i}`}
-          key={data.id}
-          src={data.images.fixed_height.url}
-        />
-      ))}
+      {imagesData &&
+        imagesData.data.map((data, i) => (
+          <StyledImg
+            alt={`giphy-${i}`}
+            key={data.id}
+            src={data.images.fixed_height.url}
+          />
+        ))}
     </ImagesContainer>
   )
 }
