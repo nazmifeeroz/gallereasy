@@ -3,13 +3,18 @@ import styled from 'styled-components'
 import 'whatwg-fetch'
 import useDebounce from '@utils/useDebounce'
 
+const chunk = (arr, size) =>
+  Array.from({length: Math.ceil(arr.length / size)}, (v, i) =>
+    arr.slice(i * size, i * size + size)
+  )
+
 const handleSearch = (searchInput, setImagesData) => {
   window
     .fetch(
       `http://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_API_KEY}&q=${searchInput}&limit=8`
     )
     .then(response => response.json())
-    .then(data => setImagesData(data))
+    .then(({data}) => setImagesData(chunk(data, 4)))
 }
 
 const SearchBar = ({setImagesData}) => {
@@ -26,6 +31,7 @@ const SearchBar = ({setImagesData}) => {
         <SearchInput
           onChange={e => setSearch(e.target.value)}
           placeholder="Start searching for images!"
+          autoFocus
         />
       </SearchContainer>
     </div>
