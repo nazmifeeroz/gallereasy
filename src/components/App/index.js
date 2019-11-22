@@ -6,6 +6,7 @@ import ImagesList from '@components/ImagesList'
 import SearchBar from '@components/SearchBar'
 import {Loader, Error} from '@components/partials'
 import machineConfig from '@services/machineConfig'
+import AppContext from '@services/AppContext'
 
 const App = () => {
   const [current, send] = useMachine(
@@ -18,16 +19,14 @@ const App = () => {
   )
 
   return (
-    <>
+    <AppContext.Provider value={{current, send}}>
       <Header />
-      <SearchBar current={current} send={send} />
+      <SearchBar />
       {current.matches('searching') && <Loader size="big" />}
       {current.matches('error') && <Error message={current.context.error} />}
-      {current.matches('success') && (
-        <ImagesList current={current} send={send} />
-      )}
+      {current.matches('success') && <ImagesList />}
       <Footer />
-    </>
+    </AppContext.Provider>
   )
 }
 

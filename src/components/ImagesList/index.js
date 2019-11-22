@@ -1,8 +1,10 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import styled, {css} from 'styled-components'
 import {ImageLoader} from '@components/partials'
+import AppContext from '@services/AppContext'
 
-const ImagesList = ({current, send}) => {
+const ImagesList = () => {
+  const {current, send} = useContext(AppContext)
   const {imagesData, tagged} = current.context
 
   return imagesData.length > 0 ? (

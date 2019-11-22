@@ -1,9 +1,11 @@
-import React, {useEffect} from 'react'
+import React, {useContext, useEffect} from 'react'
 import styled from 'styled-components'
 import 'whatwg-fetch'
 import useDebounce from '@utils/useDebounce'
+import AppContext from '@services/AppContext'
 
-const SearchBar = ({current, send}) => {
+const SearchBar = () => {
+  const {current, send} = useContext(AppContext)
   const debouncedSearch = useDebounce(current.context.searchInput, 200)
 
   useEffect(() => {
