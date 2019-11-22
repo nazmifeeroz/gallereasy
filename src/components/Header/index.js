@@ -1,18 +1,33 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, {useContext} from 'react'
+import styled, {css} from 'styled-components'
+import AppContext from '@services/AppContext'
 
-const Header = () => (
-  <HeaderContainer>
-    <Brand>
-      Galler
-      <span>easy</span>
-    </Brand>
-    <NavItemsContainer>
-      <NavItem>Search</NavItem>
-      <NavItem>Favourites</NavItem>
-    </NavItemsContainer>
-  </HeaderContainer>
-)
+const Header = () => {
+  const {current, send} = useContext(AppContext)
+  return (
+    <HeaderContainer>
+      <Brand>
+        Galler
+        <span>easy</span>
+      </Brand>
+      <NavItemsContainer>
+        <NavItem
+          active={current.matches('searchTab')}
+          onClick={() => send('SELECT_SEARCH')}
+        >
+          Search
+        </NavItem>
+        <NavItem
+          active={current.matches('favoritesTab')}
+          onClick={() => send('SELECT_FAVORITES')}
+        >
+          Favourites
+          {current.context.numOfTags}
+        </NavItem>
+      </NavItemsContainer>
+    </HeaderContainer>
+  )
+}
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -38,8 +53,19 @@ const NavItemsContainer = styled.div`
   padding: 0 15px;
 `
 
-const NavItem = styled.h6`
+const NavItem = styled.a`
+  ${props =>
+    props.active &&
+    css`
+      font-weight: bold;
+    `}
+  align-items: center;
+  color: black;
+  cursor: pointer;
+  display: flex;
+  height: 100%;
   margin: 0 10px;
+  padding: 5px;
 `
 
 export default Header

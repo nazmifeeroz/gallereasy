@@ -4,39 +4,58 @@ import {search as searchGiphyAPI} from '@services/giphy'
 const machineConfig = Machine(
   {
     id: 'app',
-    initial: 'ready',
+    initial: 'searchTab',
     states: {
-      ready: {
+      searchTab: {
+        id: 'searchTab',
+        initial: 'ready',
         on: {
-          SET_SEARCH: {actions: 'setSearchInput'},
-          SEARCH: 'searching',
+          SELECT_FAVORITES: 'favoritesTab',
         },
-      },
-      searching: {
-        invoke: {
-          src: 'searchGiphyAPI',
-          onDone: {
-            target: 'success',
-            actions: 'setImagesData',
+        states: {
+          ready: {
+            on: {
+              SET_SEARCH: {actions: 'setSearchInput'},
+              SEARCH: 'searching',
+            },
           },
-          onError: {
-            target: 'error',
-            actions: 'setError',
+          searching: {
+            invoke: {
+              src: 'searchGiphyAPI',
+              onDone: {
+                target: 'success',
+                actions: 'setImagesData',
+              },
+              onError: {
+                target: 'error',
+                actions: 'setError',
+              },
+            },
+          },
+          success: {
+            on: {
+              SET_SEARCH: {actions: 'setSearchInput'},
+              ADD_TAG: {actions: ['addTag', 'calcNumOfTags']},
+              DELETE_TAG: {actions: ['deleteTag', 'calcNumOfTags']},
+              SEARCH: 'searching',
+            },
+          },
+          error: {
+            on: {
+              SET_SEARCH: {actions: 'setSearchInput'},
+              SEARCH: 'searching',
+            },
           },
         },
       },
-      success: {
+      favoritesTab: {
+        id: 'favoritesTab',
+        initial: 'ready',
         on: {
-          SET_SEARCH: {actions: 'setSearchInput'},
-          ADD_TAG: {actions: 'addTag'},
-          DELETE_TAG: {actions: 'deleteTag'},
-          SEARCH: 'searching',
+          SELECT_SEARCH: 'searchTab',
         },
-      },
-      error: {
-        on: {
-          SET_SEARCH: {actions: 'setSearchInput'},
-          SEARCH: 'searching',
+        states: {
+          ready: {},
         },
       },
     },
@@ -46,6 +65,9 @@ const machineConfig = Machine(
       searchGiphyAPI,
     },
     actions: {
+      calcNumOfTags: assign(ctx => ({
+        numOfTags: ctx.tagged.length > 0 && ` (${ctx.tagged.length})`,
+      })),
       setSearchInput: assign((_ctx, {value}) => ({searchInput: value})),
       setError: assign((_ctx, log) => ({
         error: log.data.message.includes('NetworkError')

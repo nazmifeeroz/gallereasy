@@ -16,6 +16,7 @@ const SearchBar = () => {
     <div className="row">
       <SearchContainer>
         <SearchInput
+          value={current.context.searchInput}
           onChange={e => send('SET_SEARCH', {value: e.target.value})}
           placeholder="Start searching for images!"
           autoFocus
