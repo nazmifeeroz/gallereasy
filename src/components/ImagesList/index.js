@@ -12,7 +12,7 @@ const ImagesList = ({imagesData}) => {
 
   return (
     imagesData && (
-      <ImagesWrapper>
+      <ImagesContainer>
         {imagesData.map(imagesGroup => (
           <ImagesRow key={`image-${imagesGroup[0].id}`}>
             {imagesGroup.map((imageObj, ig) => (
@@ -33,11 +33,11 @@ const ImagesList = ({imagesData}) => {
             ))}
           </ImagesRow>
         ))}
-      </ImagesWrapper>
+      </ImagesContainer>
     )
   )
 }
-const ImagesWrapper = styled.div.attrs(() => ({
+const ImagesContainer = styled.div.attrs(() => ({
   className: 'container',
 }))``
 
@@ -60,8 +60,7 @@ const ImageThumbnail = styled.div`
     !props.tagged &&
     css`
       :hover a {
-        display: block;
-        opacity: 0.4;
+        opacity: 0.3;
       }
     `}
 `
@@ -81,7 +80,10 @@ const FavoriteTag = styled.a.attrs(() => ({}))`
   ${props =>
     !props.tagged &&
     css`
-      display: none;
+      opacity: 0;
+      @media only screen and (max-width: 600px) {
+        opacity: 0.3;
+      }
     `}
 `
 

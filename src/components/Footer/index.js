@@ -14,10 +14,8 @@ const StyledFooter = styled.footer.attrs(() => ({
   className: 'page-footer grey lighten-3 grey-text text-darken-1',
 }))`
   width: 100%;
-  padding: 10px 50px;
-  @media only screen and (min-width: 600px) {
-    position: absolute;
-    bottom: 0;
-  }
+  padding: 10px 20px;
+  position: absolute;
+  bottom: 0;
 `
 export default Footer

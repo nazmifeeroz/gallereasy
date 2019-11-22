@@ -1,7 +1,7 @@
 {
   "name": "gallereasy",
   "version": "1.0.0",
-  "description": "",
+  "description": "Giphy api search",
   "main": "src/index.js",
   "scripts": {
     "start": "parcel src/index.html --open",
@@ -25,10 +25,12 @@
     "parcel-bundler": "^1.12.4"
   },
   "dependencies": {
+    "@xstate/react": "^0.8.1",
     "materialize-css": "^1.0.0-rc.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "styled-components": "^4.4.1",
-    "whatwg-fetch": "^3.0.0"
+    "whatwg-fetch": "^3.0.0",
+    "xstate": "^4.6.7"
   }
 }
