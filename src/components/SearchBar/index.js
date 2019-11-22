@@ -10,7 +10,6 @@ const SearchBar = ({current, send}) => {
     if (debouncedSearch) send('SEARCH')
   }, [debouncedSearch])
 
-  console.log('current.context', current)
   return (
     <div className="row">
       <SearchContainer>

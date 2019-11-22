@@ -1,10 +1,11 @@
 import React from 'react'
+import {Machine, assign} from 'xstate'
+import {useMachine} from '@xstate/react'
 import Footer from '@components/Footer'
 import Header from '@components/Header'
 import ImagesList from '@components/ImagesList'
 import SearchBar from '@components/SearchBar'
-import {Machine, assign} from 'xstate'
-import {useMachine} from '@xstate/react'
+import {Loader, Error} from '@components/partials'
 
 const chunk = (arr, size) =>
   Array.from({length: Math.ceil(arr.length / size)}, (v, i) =>
@@ -37,7 +38,8 @@ const machineConfig = Machine(
         invoke: {
           src: 'searchGiphyAPI',
           onDone: {
-            target: 'ready',
+            target: 'success',
+            actions: 'setImagesData',
           },
           onError: {
             target: 'error',
@@ -45,8 +47,15 @@ const machineConfig = Machine(
           },
         },
       },
+      success: {
+        on: {
+          SET_SEARCH: {actions: 'setSearchInput'},
+          SEARCH: 'searching',
+        },
+      },
       error: {
         on: {
+          SET_SEARCH: {actions: 'setSearchInput'},
           SEARCH: 'searching',
         },
       },
@@ -59,6 +68,7 @@ const machineConfig = Machine(
     actions: {
       setSearchInput: assign((_ctx, {value}) => ({searchInput: value})),
       setError: assign((_ctx, log) => ({error: log.data.message})),
+      setImagesData: assign((_ctx, {data}) => ({imagesData: data})),
     },
   }
 )
@@ -72,45 +82,23 @@ const App = () => {
     })
   )
 
+  const errorMsg = () =>
+    current.context.error.includes('NetworkError')
+      ? 'You have no internet connection!'
+      : 'Please insert your GIPHY API key!'
+
   return (
     <>
       <Header />
       <SearchBar current={current} send={send} />
-      {current.matches('searching') && <Loader />}
-      {current.matches('error') && <Error message={current.context.error} />}
-      {/* <ImagesList imagesData={imagesData} /> */}
+      {current.matches('searching') && <Loader size="big" />}
+      {current.matches('error') && <Error message={errorMsg()} />}
+      {current.matches('success') && (
+        <ImagesList imagesData={current.context.imagesData} />
+      )}
       <Footer />
     </>
   )
 }
-
-const Error = ({message}) => (
-  <div className="center-align">
-    <p>
-      Error:
-      {message.includes('NetworkError')
-        ? ' Network Error!'
-        : ' Giphy API KEY is invalid!'}
-    </p>
-  </div>
-)
-
-const Loader = () => (
-  <div className="center-align">
-    <div className="preloader-wrapper big active">
-      <div className="spinner-layer spinner-blue-only">
-        <div className="circle-clipper left">
-          <div className="circle" />
-        </div>
-        <div className="gap-patch">
-          <div className="circle" />
-        </div>
-        <div className="circle-clipper right">
-          <div className="circle" />
-        </div>
-      </div>
-    </div>
-  </div>
-)
 
 export default App
