@@ -1,35 +1,21 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import styled from 'styled-components'
 import 'whatwg-fetch'
 import useDebounce from '@utils/useDebounce'
 
-const chunk = (arr, size) =>
-  Array.from({length: Math.ceil(arr.length / size)}, (v, i) =>
-    arr.slice(i * size, i * size + size)
-  )
-
-const handleSearch = (searchInput, setImagesData) => {
-  window
-    .fetch(
-      `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_API_KEY}&q=${searchInput}&limit=8`
-    )
-    .then(response => response.json())
-    .then(({data}) => setImagesData(chunk(data, 4)))
-}
-
-const SearchBar = ({setImagesData}) => {
-  const [search, setSearch] = useState('')
-  const debouncedSearch = useDebounce(search, 200)
+const SearchBar = ({current, send}) => {
+  const debouncedSearch = useDebounce(current.context.searchInput, 200)
 
   useEffect(() => {
-    if (debouncedSearch) handleSearch(search, setImagesData)
+    if (debouncedSearch) send('SEARCH')
   }, [debouncedSearch])
 
+  console.log('current.context', current)
   return (
     <div className="row">
       <SearchContainer>
         <SearchInput
-          onChange={e => setSearch(e.target.value)}
+          onChange={e => send('SET_SEARCH', {value: e.target.value})}
           placeholder="Start searching for images!"
           autoFocus
         />
