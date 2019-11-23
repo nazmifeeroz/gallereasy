@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import AppContext from '@services/AppContext'
 import chunk from '@utils/chunk'
 import ImageItem from './ImageItem'
+import FetchMoreButton from './FetchMoreButton'
 
 const ImagesList = ({imagesData}) => {
   const {current} = useContext(AppContext)
@@ -14,7 +15,7 @@ const ImagesList = ({imagesData}) => {
   const chunkedData = chunk(formattedImagesData, 4)
 
   return chunkedData.length > 0 ? (
-    <div className="container">
+    <StyledContainer>
       {chunkedData.map(imagesGroup => (
         <ImagesRow key={`image-${imagesGroup[0].id}`}>
           {imagesGroup.map(imageObj => (
@@ -22,7 +23,8 @@ const ImagesList = ({imagesData}) => {
           ))}
         </ImagesRow>
       ))}
-    </div>
+      {!onFavoritesPage && <FetchMoreButton />}
+    </StyledContainer>
   ) : (
     <div className="center-align">
       <h5>
@@ -33,6 +35,10 @@ const ImagesList = ({imagesData}) => {
     </div>
   )
 }
+
+const StyledContainer = styled.div.attrs(() => ({
+  className: 'container',
+}))``
 
 const ImagesRow = styled.div.attrs(() => ({
   className: 'row',

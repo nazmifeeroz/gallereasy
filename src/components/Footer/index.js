@@ -15,7 +15,9 @@ const StyledFooter = styled.footer.attrs(() => ({
 }))`
   width: 100%;
   padding: 10px 20px;
-  position: absolute;
+  position: fixed;
+  left: 0;
   bottom: 0;
+  z-index: 10;
 `
 export default Footer

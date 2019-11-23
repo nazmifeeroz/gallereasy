@@ -37,13 +37,26 @@ const machineConfig = Machine(
               SET_SEARCH: {actions: 'setSearchInput'},
               ADD_TAG: {actions: ['addTag', 'calcNumOfTags']},
               DELETE_TAG: {actions: ['deleteTag', 'calcNumOfTags']},
-              SEARCH: 'searching',
+              SEARCH: {
+                target: 'searching',
+                actions: 'resetOffset',
+              },
+              FETCH_MORE: {target: 'fetchMore', actions: 'updateOffset'},
             },
           },
           error: {
             on: {
               SET_SEARCH: {actions: 'setSearchInput'},
               SEARCH: 'searching',
+            },
+          },
+          fetchMore: {
+            invoke: {
+              src: 'searchGiphyAPI',
+              onDone: {
+                target: 'success',
+                actions: 'updateImagesData',
+              },
             },
           },
         },
@@ -78,13 +91,26 @@ const machineConfig = Machine(
           ? 'You have no internet connection!'
           : 'Please insert your GIPHY API key!',
       })),
-      setImagesData: assign((_ctx, {data}) => ({imagesData: data})),
+      setImagesData: assign((_ctx, {data: {data, pagination}}) => ({
+        imagesData: data,
+        pagination,
+      })),
       addTag: assign(({tagged}, e) => {
         tagged.push(e.image)
         return {tagged}
       }),
       deleteTag: assign((ctx, e) => ({
         tagged: ctx.tagged.filter(t => t.id !== e.image.id),
+      })),
+      resetOffset: assign(ctx => ({
+        pagination: {...ctx.pagination, offset: 0},
+      })),
+      updateOffset: assign(ctx => ({
+        pagination: {...ctx.pagination, offset: ctx.imagesData.length + 1},
+      })),
+      updateImagesData: assign((ctx, {data: {data, pagination}}) => ({
+        imagesData: [...ctx.imagesData, ...data],
+        pagination,
       })),
     },
   }

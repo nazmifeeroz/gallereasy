@@ -1,6 +1,5 @@
 import React, {useContext, useEffect} from 'react'
 import styled from 'styled-components'
-import 'whatwg-fetch'
 import useDebounce from '@utils/useDebounce'
 import AppContext from '@services/AppContext'
 

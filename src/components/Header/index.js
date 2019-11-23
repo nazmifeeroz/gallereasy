@@ -1,35 +1,47 @@
 import React, {useContext} from 'react'
 import styled, {css} from 'styled-components'
 import AppContext from '@services/AppContext'
+import SearchBar from '@components/SearchBar'
 
 const Header = () => {
   const {current, send} = useContext(AppContext)
   return (
     <HeaderContainer>
-      <Brand>
-        Galler
-        <span>easy</span>
-      </Brand>
-      <NavItemsContainer>
-        <NavItem
-          active={current.matches('searchTab')}
-          onClick={() => send('SELECT_SEARCH')}
-        >
-          Search
-        </NavItem>
-        <NavItem
-          active={current.matches('favoritesTab')}
-          onClick={() => send('SELECT_FAVORITES')}
-        >
-          Favourites
-          {current.context.numOfTags}
-        </NavItem>
-      </NavItemsContainer>
+      <NavBar>
+        <Brand>
+          Galler
+          <span>easy</span>
+        </Brand>
+        <NavItemsContainer>
+          <NavItem
+            active={current.matches('searchTab')}
+            onClick={() => send('SELECT_SEARCH')}
+          >
+            Search
+          </NavItem>
+          <NavItem
+            active={current.matches('favoritesTab')}
+            onClick={() => send('SELECT_FAVORITES')}
+          >
+            Favourites
+            {current.context.numOfTags}
+          </NavItem>
+        </NavItemsContainer>
+      </NavBar>
+      {current.matches('searchTab') && <SearchBar />}
     </HeaderContainer>
   )
 }
 
 const HeaderContainer = styled.div`
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 99;
+  background-color: white;
+`
+
+const NavBar = styled.div`
   display: flex;
   border-bottom-width: 1px;
   border-bottom-style: solid;
