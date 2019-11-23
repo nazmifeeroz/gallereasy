@@ -1,4 +1,5 @@
 import React, {useContext} from 'react'
+import styled from 'styled-components'
 import ImagesList from '@components/ImagesList'
 import AppContext from '@services/AppContext'
 import chunk from '@utils/chunk'
@@ -8,10 +9,16 @@ const FavoritesPage = () => {
   const chunkedTags = chunk(current.context.tagged, 4)
 
   return (
-    <div className="container">
+    <StyledContainer>
       <ImagesList imagesData={chunkedTags} />
-    </div>
+    </StyledContainer>
   )
 }
+
+const StyledContainer = styled.div.attrs(() => ({
+  className: 'container',
+}))`
+  margin-top: 15px;
+`
 
 export default FavoritesPage
