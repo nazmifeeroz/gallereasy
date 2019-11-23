@@ -7,6 +7,7 @@ import ImagesList from '@components/ImagesList'
 import SearchBar from '@components/SearchBar'
 import machineConfig from '@services/machineConfig'
 import {Loader, Error} from '@components/partials'
+import FavoritesPage from '@components/Favorites'
 
 const App = () => {
   const [current, send] = useMachine(
@@ -27,8 +28,10 @@ const App = () => {
       {current.matches('searchTab.error') && (
         <Error message={current.context.error} />
       )}
-      {current.matches('searchTab.success') && <ImagesList />}
-      {current.matches('favoritesTab.ready') && <div>favorites tab</div>}
+      {current.context.imagesData && current.matches('searchTab.success') && (
+        <ImagesList imagesData={current.context.imagesData} />
+      )}
+      {current.matches('favoritesTab.ready') && <FavoritesPage />}
       <Footer />
     </AppContext.Provider>
   )

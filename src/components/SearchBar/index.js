@@ -4,12 +4,14 @@ import 'whatwg-fetch'
 import useDebounce from '@utils/useDebounce'
 import AppContext from '@services/AppContext'
 
+const MS_TO_WAIT = 500
+
 const SearchBar = () => {
   const {current, send} = useContext(AppContext)
-  const debouncedSearch = useDebounce(current.context.searchInput, 200)
+  const debouncedSearch = useDebounce(current.context.searchInput, MS_TO_WAIT)
 
   useEffect(() => {
-    if (debouncedSearch) send('SEARCH')
+    if (current.event.type === 'SET_SEARCH' && debouncedSearch) send('SEARCH')
   }, [debouncedSearch])
 
   return (

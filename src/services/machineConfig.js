@@ -52,10 +52,14 @@ const machineConfig = Machine(
         id: 'favoritesTab',
         initial: 'ready',
         on: {
-          SELECT_SEARCH: 'searchTab',
+          SELECT_SEARCH: 'searchTab.success',
         },
         states: {
-          ready: {},
+          ready: {
+            on: {
+              DELETE_TAG: {actions: ['deleteTag', 'calcNumOfTags']},
+            },
+          },
         },
       },
     },
@@ -76,11 +80,11 @@ const machineConfig = Machine(
       })),
       setImagesData: assign((_ctx, {data}) => ({imagesData: data})),
       addTag: assign(({tagged}, e) => {
-        tagged.push(e.id)
+        tagged.push(e.image)
         return {tagged}
       }),
       deleteTag: assign((ctx, e) => ({
-        tagged: ctx.tagged.filter(t => t !== e.id),
+        tagged: ctx.tagged.filter(t => t.id !== e.image.id),
       })),
     },
   }

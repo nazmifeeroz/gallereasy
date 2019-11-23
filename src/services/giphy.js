@@ -1,7 +1,4 @@
-const chunk = (arr, size) =>
-  Array.from({length: Math.ceil(arr.length / size)}, (v, i) =>
-    arr.slice(i * size, i * size + size)
-  )
+import chunk from '@utils/chunk'
 
 const search = ctx =>
   new Promise((resolve, reject) => {
@@ -10,7 +7,13 @@ const search = ctx =>
         `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_API_KEY}&q=${ctx.searchInput}&limit=8`
       )
       .then(response => response.json())
-      .then(({data}) => resolve(chunk(data, 4)))
+      .then(({data}) => {
+        const formattedData = data.map(d => ({
+          id: d.id,
+          url: d.images.fixed_height.url,
+        }))
+        resolve(chunk(formattedData, 4))
+      })
       .catch(err => reject(err))
   })
 

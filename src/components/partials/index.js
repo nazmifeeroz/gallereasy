@@ -1,5 +1,5 @@
 import Loader from './Loader'
 import Error from './Error'
-import ImageLoader from './ImageLoader'
+import ImageLazyLoader from './ImageLazyLoader'
 
-export {Loader, Error, ImageLoader}
+export {Loader, Error, ImageLazyLoader}
