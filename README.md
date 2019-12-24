@@ -1,4 +1,4 @@
-# Gallereasy (2359 Media)
+# Gallereasy
 
 ## Requirements
 
@@ -32,8 +32,9 @@
 
 ## To run app
 
-- Create a  `.env` file and copy variable from `.env.sample`. Paste your Giphy api key.
+- Create a `.env` file and copy variable from `.env.sample`. Paste your Giphy api key.
 - Run `yarn && yarn start`
 
 ---
+
 Built with :heart: by Nazmi

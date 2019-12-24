@@ -9,8 +9,8 @@ const Header = () => {
     <HeaderContainer>
       <NavBar>
         <Brand>
-          Galler
-          <span>easy</span>
+          My
+          <span>Giphy</span>
         </Brand>
         <NavItemsContainer>
           <NavItem

@@ -3,9 +3,9 @@ import styled from 'styled-components'
 
 const Footer = () => (
   <StyledFooter>
-    Gallereasy POC web app
+    Nazmi Giphy App
     <a className="grey-text text-darken-1 right" href="#!">
-      2359 Media
+      Built with Love
     </a>
   </StyledFooter>
 )
